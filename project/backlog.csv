@@ -1,0 +1,19 @@
+milestone,title,workstream,owner,labels,body
+Discovery,Agree scope and out-of-scope list,Program,Program lead,program,Confirm plans channels and order types in scope. Output: docs/01_program_brief.md
+Discovery,Agree success criteria with sponsor,Program,Program lead,program,SC-1 to SC-4 with targets and channel split
+Requirements,Write eligibility and pricing requirements (BR-01 to BR-04),Pricing,Product,requirements,Acceptance criteria for each requirement
+Requirements,Write purchase and quoting requirements (BR-05 to BR-07),Quoting,Sales Ops,requirements,Includes mid-term proration rule
+Requirements,Write access and entitlement requirements (BR-08 to BR-10),Entitlement,Engineering,requirements,Depends on decision D-03
+Requirements,Decide when sales-led customers get access (D-03),Entitlement,VP RevOps,decision,Options: on booking or on payment. Log the tradeoff
+Requirements,Write billing and reporting requirements (BR-11 to BR-14),Billing,Finance,requirements,Includes launch dashboard fields
+Build,Configure checkout for eligible plans and seat limits,Pricing,Product,build,BR-01 BR-03 BR-05
+Build,Add Harbor Assist to quotes and amendments,Quoting,Sales Ops,build,BR-04 BR-06 BR-07
+Build,Send payment status to entitlement service (DEP-03),Entitlement,Engineering,build;dependency,Needed by 6 Feb
+Build,Build launch dashboard with channel split,Reporting,Analytics,build,BR-13 BR-14
+UAT,Run UAT test cases TC-01 to TC-14,Program,Program lead,uat,Each owner signs off their cases
+UAT,Deliver sales enablement and support macros,Enablement,Enablement,readiness,Talk track pricing sheet quote walkthrough
+Go-live,Hold go / no-go review,Program,Program lead,program;decision,docs/05_launch_readiness.md
+Go-live,Run two weeks of hypercare,Program,Program lead,hypercare,Daily stand-up and paid-but-not-live report
+Readout,Write 90-day readout,Program,Program lead,readout,docs/07_post_launch_readout.md
+Readout,Fix proration to daily in quote tool (TC-09b TC-09c),Quoting,Sales Ops,follow-up,From readout recommendation 2
+Readout,Propose access on booking for customers in good standing (D-06),Entitlement,Program lead,follow-up;decision,From readout recommendation 1
