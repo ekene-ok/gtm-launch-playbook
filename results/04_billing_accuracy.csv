@@ -1,0 +1,4 @@
+order_type,orders,billing_errors,error_rate_pct
+mid_term,65,8.0,12.3
+new_term,1403,2.0,0.1
+,1468,10.0,0.7

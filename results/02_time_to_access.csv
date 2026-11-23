@@ -1,0 +1,4 @@
+channel,orders,median_days,p90_days,pct_within_24h
+sales_led,252,4.5,13.5,31.7
+self_serve,1216,0.01,0.0,98.7
+,1468,0.01,3.0,87.2

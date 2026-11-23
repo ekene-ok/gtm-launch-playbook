@@ -1,0 +1,5 @@
+criterion,target,overall_pct,self_serve_pct,sales_led_pct,overall_met,sales_led_met
+SC-1 Attach rate (90 days),>= 8%,8.7,9.9,5.5,True,False
+SC-2 Activation within 14 days,>= 60%,67.3,70.5,52.0,True,False
+SC-3 Access within 24 hours,>= 95%,87.2,98.7,31.7,False,False
+SC-4 Billing error rate,< 1%,0.7,0.2,3.2,True,False
