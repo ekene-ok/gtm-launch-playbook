@@ -37,54 +37,28 @@ def run(con):
     return out
 
 
-def style(ax):
-    for s in ax.spines.values():
-        s.set_visible(False)
-    ax.set_yticks([])
-    ax.tick_params(axis="x", length=0, labelsize=11, colors=INK)
-
-
 def chart_access(df):
     df = df[df.channel.notna()].set_index("channel")
-    labels = {"self_serve": "Self-serve", "sales_led": "Sales-led"}
-    order = ["self_serve", "sales_led"]
-    vals = [df.loc[c, "pct_within_24h"] for c in order]
-    fig, ax = plt.subplots(figsize=(7, 4.2), dpi=150)
-    bars = ax.bar([labels[c] for c in order], vals, width=0.5,
-                  color=[GREY, HIGHLIGHT])
-    for b, v, c in zip(bars, vals, order):
-        med = df.loc[c, "median_days"]
-        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=14, color=INK)
-        ax.text(b.get_x() + b.get_width() / 2, v + 9, ("instant access" if med < 0.1 else f"median wait {med:.1f} days"), ha="center", fontsize=9.5, color=MUTED)
-    ax.axhline(95, color=brand.HAIRLINE, linewidth=1)
-    ax.text(1.42, 95, "target 95%", va="center", fontsize=9.5, color=MUTED)
-    ax.set_ylim(0, 118)
-    style(ax)
-    ax.set_title("Sales-led customers waited days for access", loc="left", fontsize=13, color=INK, pad=24)
-    ax.text(0, 1.03, "Orders with working access within 24 hours", transform=ax.transAxes, fontsize=10, color=MUTED, va="bottom")
-    fig.tight_layout(rect=(0, 0.06, 1, 1))
-    brand.source(fig, "Simulated launch data; queries in sql/")
-    fig.savefig(IMG / "01_access_within_24h.png", facecolor="white")
-    plt.close(fig)
+    vals = [df.loc[c, "pct_within_24h"] for c in ["self_serve", "sales_led"]]
+    med = df.loc["sales_led", "median_days"]
+    fig, ax = brand.chart(height=3.4, label_in=1.15)
+    brand.hbar(ax, ["Self-serve", "Sales-led"], vals, {1}, lambda v: f"{v:.0f}%", HIGHLIGHT, xmax=100)
+    ax.axvline(95, color=brand.HAIRLINE, linewidth=1, zorder=0)
+    ax.text(95, 1.5, "95% target", ha="center", va="bottom", fontsize=9, color=MUTED)
+    brand.titles(fig, "Sales-led customers waited days for access",
+                 f"Orders with working access within 24 hours. Sales-led median wait: {med:.1f} days")
+    brand.credit(fig, "Simulated launch data; queries in sql/")
+    brand.save(fig, IMG / "01_access_within_24h.png")
 
 
 def chart_activation(df):
-    labels = [w.split(". ")[1] for w in df.wait_for_access]
-    vals = df.activation_pct.tolist()
-    colors = [GREY] + [HIGHLIGHT] * (len(vals) - 1)
-    fig, ax = plt.subplots(figsize=(7, 4.2), dpi=150)
-    bars = ax.bar(labels, vals, width=0.55, color=colors)
-    for b, v, n, c in zip(bars, vals, df.orders, colors):
-        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=13, color=INK)
-        ax.text(b.get_x() + b.get_width() / 2, 3, f"{n:,} orders", ha="center", fontsize=9, color=INK if c == GREY else "white")
-    ax.set_ylim(0, 90)
-    style(ax)
-    ax.set_title("Activation fell once the wait passed three days", loc="left", fontsize=13, color=INK, pad=24)
-    ax.text(0, 1.03, "Accounts using the add-on within 14 days, by wait for access", transform=ax.transAxes, fontsize=10, color=MUTED, va="bottom")
-    fig.tight_layout(rect=(0, 0.06, 1, 1))
-    brand.source(fig, "Simulated launch data; queries in sql/")
-    fig.savefig(IMG / "02_activation_by_wait.png", facecolor="white")
-    plt.close(fig)
+    labels = [f"{w.split('. ')[1]}\n{n:,} orders" for w, n in zip(df.wait_for_access, df.orders)]
+    fig, ax = brand.chart(height=4.2, label_in=0.0, xaxis=True, right_in=0.3)
+    brand.vbar(ax, labels, df.activation_pct.tolist(), set(range(1, len(df))), lambda v: f"{v:.0f}%", HIGHLIGHT)
+    brand.titles(fig, "Activation fell once the wait passed three days",
+                 "Accounts using the add-on within 14 days, by wait for access")
+    brand.credit(fig, "Simulated launch data; queries in sql/")
+    brand.save(fig, IMG / "02_activation_by_wait.png")
 
 
 def main():
