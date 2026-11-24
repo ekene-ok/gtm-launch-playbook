@@ -7,10 +7,13 @@ import duckdb
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).parent))
+import brand_style as brand
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA, SQL, RES, IMG = ROOT / "data", ROOT / "sql", ROOT / "results", ROOT / "images"
-HIGHLIGHT, GREY, INK, MUTED = "#d1495b", "#c9c7c1", "#1a1a1a", "#6b6a66"
+HIGHLIGHT, GREY, INK, MUTED = brand.PROJECT["gtm-launch-playbook"], brand.CONTEXT, brand.INK, brand.MUTED
 
 
 def load():
@@ -51,15 +54,16 @@ def chart_access(df):
                   color=[GREY, HIGHLIGHT])
     for b, v, c in zip(bars, vals, order):
         med = df.loc[c, "median_days"]
-        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=14, fontweight="bold", color=INK)
+        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=14, color=INK)
         ax.text(b.get_x() + b.get_width() / 2, v + 9, ("instant access" if med < 0.1 else f"median wait {med:.1f} days"), ha="center", fontsize=9.5, color=MUTED)
-    ax.axhline(95, color=MUTED, linestyle=(0, (3, 3)), linewidth=1)
+    ax.axhline(95, color=brand.HAIRLINE, linewidth=1)
     ax.text(1.42, 95, "target 95%", va="center", fontsize=9.5, color=MUTED)
     ax.set_ylim(0, 118)
     style(ax)
-    ax.set_title("Sales-led customers waited days for access", loc="left", fontsize=13, fontweight="bold", color=INK, pad=24)
+    ax.set_title("Sales-led customers waited days for access", loc="left", fontsize=13, color=INK, pad=24)
     ax.text(0, 1.03, "Orders with working access within 24 hours", transform=ax.transAxes, fontsize=10, color=MUTED, va="bottom")
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    brand.source(fig, "Simulated launch data; queries in sql/")
     fig.savefig(IMG / "01_access_within_24h.png", facecolor="white")
     plt.close(fig)
 
@@ -71,13 +75,14 @@ def chart_activation(df):
     fig, ax = plt.subplots(figsize=(7, 4.2), dpi=150)
     bars = ax.bar(labels, vals, width=0.55, color=colors)
     for b, v, n, c in zip(bars, vals, df.orders, colors):
-        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=13, fontweight="bold", color=INK)
-        ax.text(b.get_x() + b.get_width() / 2, 3, f"{n} orders", ha="center", fontsize=9, color=INK if c == GREY else "white")
+        ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v:.0f}%", ha="center", fontsize=13, color=INK)
+        ax.text(b.get_x() + b.get_width() / 2, 3, f"{n:,} orders", ha="center", fontsize=9, color=INK if c == GREY else "white")
     ax.set_ylim(0, 90)
     style(ax)
-    ax.set_title("Activation fell once the wait passed three days", loc="left", fontsize=13, fontweight="bold", color=INK, pad=24)
+    ax.set_title("Activation fell once the wait passed three days", loc="left", fontsize=13, color=INK, pad=24)
     ax.text(0, 1.03, "Accounts using the add-on within 14 days, by wait for access", transform=ax.transAxes, fontsize=10, color=MUTED, va="bottom")
-    fig.tight_layout()
+    fig.tight_layout(rect=(0, 0.06, 1, 1))
+    brand.source(fig, "Simulated launch data; queries in sql/")
     fig.savefig(IMG / "02_activation_by_wait.png", facecolor="white")
     plt.close(fig)
 
