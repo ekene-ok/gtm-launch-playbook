@@ -1,16 +1,42 @@
 # GTM Launch Playbook: Harbor Assist
 
-How I would run a cross-functional go-to-market launch, from scope and requirements through readiness, UAT, launch and a 90-day readout, using a fictional SaaS company launching a paid AI add-on across self-serve and sales-led channels.
+**In one line:** a full launch plan for a new paid add-on, from planning to a 90-day review, which found one rule that slowed down every sales-led customer.
 
-> Harbor Docs and Harbor Assist are fictional. All data is simulated with [src/generate_data.py](src/generate_data.py). No employer data is used.
+This shows how I'd run a product launch across several teams (product, sales, marketing, billing, support). It uses a fictional software company, Harbor Docs, launching an AI add-on that customers can buy on their own online or through a salesperson. Everything is made up, including the data.
+
+## What I found
+
+- **Overall, the launch hit three of its four goals**
+- **Customers who bought through sales missed all four.** They only got access after their invoice was paid, so the typical customer waited 4.5 days
+- **Waiting hurt.** Customers who waited more than three days were far less likely to start using the add-on, which cost about 43 customers who never got going
+
+![Access within 24 hours](images/01_access_within_24h.png)
+
+**How to read it:** the bars show the share of orders with working access within 24 hours. Self-serve customers hit 99%; sales-led customers only 32%.
+
+![Activation by wait](images/02_activation_by_wait.png)
+
+## What I'd do
+
+1. Give access as soon as a deal is signed, for customers who pay their bills on time
+2. Fix the billing rule for customers who add the product mid-contract
+3. Report every launch goal separately for self-serve and sales-led customers from day one
+
+## What's in it
+
+A launch plan you can reuse: the brief, requirements, who owns what, risks, a launch checklist, a testing plan and the 90-day review, all listed in the full section below.
+
+## Words used here
+
+- **GTM (go-to-market):** everything needed to launch and sell a product
+- **Activation:** a customer actually starting to use what they bought
+
+<details>
+<summary><b>The full analysis: method, detail and how to run it</b> (for technical readers)</summary>
 
 ## The result
 
 The launch met three of four success criteria overall, but **sales-led customers missed all four**. The cause was a launch decision: sales-led customers only got access once their invoice was paid, so the median customer waited 4.5 days. Customers who waited more than three days were far less likely to use the add-on.
-
-![Access within 24 hours](images/01_access_within_24h.png)
-
-![Activation by wait](images/02_activation_by_wait.png)
 
 **Recommendation:** grant access on booking for customers in good standing, fix the proration rule for mid-term additions, and report every success metric by channel from day one. Full detail in the [90-day readout](docs/07_post_launch_readout.md).
 
@@ -57,3 +83,5 @@ python src/run_analysis.py    # runs sql/, writes results/ and images/
 ## Skills shown
 
 Program management, business requirements, stakeholder alignment (RACI), dependency and risk management, UAT planning, launch readiness, quote-to-cash and entitlement process design, SQL (DuckDB), Python, and outcome measurement.
+
+</details>
